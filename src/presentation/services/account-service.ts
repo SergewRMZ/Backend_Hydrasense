@@ -1,6 +1,8 @@
 import { bcrypAdapter, envs, JwtAdapter, regularExps } from '../../config';
 import { CustomError } from '../../domain';
+import { AccountLoginDto } from '../../domain/dtos/auth/AccountLoginDto';
 import { AccountRegisterDto } from '../../domain/dtos/auth/AccountRegisterDto';
+import { ForgotPasswordDto } from '../../domain/dtos/auth/ForgotPasswordDto';
 import { AccountEntity } from '../../domain/entities/AccountEntity';
 import { PrismaAccountRepository } from '../../domain/repository/PrismaAccountRepository';
 import { EmailService } from './email-service';
@@ -25,10 +27,31 @@ export class AccountService {
       await this.sendEmailValidationLink(account.email);
       const { password, ...rest } = AccountEntity.fromObject(account);
 
-      const token = await JwtAdapter.generateToken({ account_id: account.account_id });
+      const token = await JwtAdapter.generateToken({ account_id: account.account_id, email: account.email });
       if(!token) throw CustomError.internalServer('Error while creating JWT');
       return {
         account: rest,
+        token: token
+      };
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`);
+    }
+  }
+
+  public async loginUser(accountLoginDto: AccountLoginDto) {
+    try {
+      const existAccount = await this.prismaAccountRepository.findByEmail(accountLoginDto.email);
+      if(!existAccount) throw CustomError.badRequest('The email does not exist');
+      const isMatch = bcrypAdapter.compare(accountLoginDto.password, existAccount.password);
+
+      if(!isMatch) throw CustomError.badRequest('Password Incorrect');
+      const { password, ...user } = AccountEntity.fromObject(existAccount); 
+
+      const token = await JwtAdapter.generateToken({ account_id: existAccount.account_id, email: existAccount.email });
+      if(!token) throw CustomError.internalServer('Error while creating JWT');
+
+      return {
+        account: user,
         token: token
       };
     } catch (error) {
@@ -55,6 +78,37 @@ export class AccountService {
     const isSent = await this.emailService.sendEmail(options);
     if(!isSent) throw CustomError.internalServer('Error sending email');
     return true;
+  }
+
+  public sendEmailResetPassword = async(forgotPasswordDto: ForgotPasswordDto) => {
+    const { email } = forgotPasswordDto;
+    const token = await JwtAdapter.generateToken({ email });
+    if(!token) throw CustomError.internalServer('Error getting token');
+    const link = `${envs.WERSERVICE_URL}/auth/reset-password/${token}`;
+
+    const html = `
+      
+      <h1>Solicitud de Reestablecimiento de Contraseña</h1>
+      <p>Hola, recibimos una solicitud para reestablecer tu contraseña. Si no realizaste esta solicitud, puedes ignorar el correo.</p>
+      <p>Para continuar con el proceso de reestablecimiento de tu contraseña, haz click en el enlace de abajo:</p>
+      <div style="text-align: center; margin: 20px 0;">
+        <a href="${link}" style="background-color: #006db8; color:white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+          Reestablecer contraseña
+        </a>
+      </div>
+    `
+
+    const options = {
+      to: email,
+      subject: 'Solicitud de Reestablecimiento de Contraseña',
+      htmlBody: html
+    }
+
+    const isSent = await this.emailService.sendEmail(options);
+    if(!isSent) throw CustomError.internalServer('Error sending email');
+    return {
+      message: `Se ha enviado un correo electrónico a ${email}`
+    };
   }
 
   public validateEmail = async (token:string) => {

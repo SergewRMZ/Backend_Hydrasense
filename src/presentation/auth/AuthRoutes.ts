@@ -20,6 +20,9 @@ export class AuthRoutes {
     const accountService = new AccountService(prismaAccountRepository, emailService);
     const authController = new AuthController(accountService);
     router.post('/register', authController.registerUser);
+    router.post('/login', authController.loginUser);
+    router.post('/validate-email/:token', authController.validateEmail);
+    router.post('/forgot-password', authController.forgotPassword);
     return router;
   }
 }
