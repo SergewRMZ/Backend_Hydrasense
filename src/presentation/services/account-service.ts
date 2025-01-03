@@ -1,5 +1,6 @@
 import { bcrypAdapter, envs, JwtAdapter, regularExps } from '../../config';
 import { CustomError } from '../../domain';
+import { ResetPasswordDto } from '../../domain/dtos/auth';
 import { AccountLoginDto } from '../../domain/dtos/auth/AccountLoginDto';
 import { AccountRegisterDto } from '../../domain/dtos/auth/AccountRegisterDto';
 import { ForgotPasswordDto } from '../../domain/dtos/auth/ForgotPasswordDto';
@@ -82,12 +83,11 @@ export class AccountService {
 
   public sendEmailResetPassword = async(forgotPasswordDto: ForgotPasswordDto) => {
     const { email } = forgotPasswordDto;
-    const token = await JwtAdapter.generateToken({ email });
+    const token = await JwtAdapter.generateToken({ email }, '15m');
     if(!token) throw CustomError.internalServer('Error getting token');
     const link = `${envs.WERSERVICE_URL}/auth/reset-password/${token}`;
 
     const html = `
-      
       <h1>Solicitud de Reestablecimiento de Contraseña</h1>
       <p>Hola, recibimos una solicitud para reestablecer tu contraseña. Si no realizaste esta solicitud, puedes ignorar el correo.</p>
       <p>Para continuar con el proceso de reestablecimiento de tu contraseña, haz click en el enlace de abajo:</p>
@@ -109,6 +109,23 @@ export class AccountService {
     return {
       message: `Se ha enviado un correo electrónico a ${email}`
     };
+  }
+
+  public resetPassword = async (token: string, resetPasswordDto: ResetPasswordDto) => {
+    const { password } = resetPasswordDto;
+    const payload = await JwtAdapter.validateToken(token);
+    if(!payload) throw CustomError.unauthorized('Invalid Token');
+    
+    const { email } = payload as { email: string };
+    if(!email) throw CustomError.internalServer('Email not in token');
+
+    const user = await this.prismaAccountRepository.findByEmail(email);
+    if(!user) throw CustomError.notFound('El usuario no existe en la base de datos');
+    
+    const hashedPassword = bcrypAdapter.hash(password);
+    const updatedUser = await this.prismaAccountRepository.updatePassword(email, hashedPassword);  
+    if(!updatedUser) throw CustomError.internalServer('Error al actualizar la contraseña');
+    return { message: 'La contraseña se ha reestablecido correctamente.'};
   }
 
   public validateEmail = async (token:string) => {

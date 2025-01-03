@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { CustomError } from '../../domain';
-import { AccountRegisterDto } from '../../domain/dtos/auth/AccountRegisterDto';
+import { AccountRegisterDto } from '../../domain/dtos/auth';
+import { AccountLoginDto } from '../../domain/dtos/auth';
+import { ForgotPasswordDto } from '../../domain/dtos/auth';
+import { ResetPasswordDto } from '../../domain/dtos/auth';
 import { AccountService } from '../services/account-service';
-import { AccountLoginDto } from '../../domain/dtos/auth/AccountLoginDto';
-import { ForgotPasswordDto } from '../../domain/dtos/auth/ForgotPasswordDto';
 
 export class AuthController {
   constructor(public readonly accountService: AccountService) {}
@@ -12,7 +13,7 @@ export class AuthController {
     if (error instanceof CustomError) {
       return res.status(error.statusCode).json({ error: error.message });
     }
-    return res.status(500).json({ error: 'Internal serve error' });
+    return res.status(500).json({ error: 'Internal server error' });
   } 
 
   public registerUser = (req: Request, res: Response) => {
@@ -46,6 +47,16 @@ export class AuthController {
 
     this.accountService.sendEmailResetPassword(forgotPasswordDto!)
       .then((message) =>  res.json(message))
+      .catch( error => this.handleError(error, res));
+  }
+
+  public resetPassword = (req: Request, res: Response) => {
+    const { token } = req.params;
+    const [error, resetPasswordDto] = ResetPasswordDto.create(req.body);
+    if(error) return res.status(400).json({ error });
+
+    this.accountService.resetPassword(token, resetPasswordDto!)
+      .then((message) => res.json(message))
       .catch( error => this.handleError(error, res));
   }
 }

@@ -23,6 +23,7 @@ export class AuthRoutes {
     router.post('/login', authController.loginUser);
     router.post('/validate-email/:token', authController.validateEmail);
     router.post('/forgot-password', authController.forgotPassword);
+    router.post('/reset-password/:token', authController.resetPassword);
     return router;
   }
 }

@@ -37,4 +37,18 @@ export class PrismaAccountRepository implements AccountRepository {
       return null;
     }
   }
+
+  async updatePassword(email: string, newPassword: string): Promise<Account | null> {
+    try {
+      const updatedAccount = await this.prisma.account.update({
+        where: { email },
+        data: { password: newPassword }
+      });
+
+      return updatedAccount;
+    } catch (error) {
+      console.error('Error updating password: ', error);
+      return null;
+    }
+  }
 }

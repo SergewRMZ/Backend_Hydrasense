@@ -99,5 +99,32 @@ En el cuerpo de la request enviarán solo el correo electrónico.
   }
 ```
 
+## RESPONSE
+Si todo sale bien, el servidor responderá con el siguiente mensaje:
+
+```
+  {
+    "message": "Se ha enviado un correo electrónico a serge15games@gmail.com"
+  }
+```
+
+Se enviará un correo electrónico al usuario donde se le proporcionará el link para reeestablecer la contraseña,
+donde en la misma se proporciona un token de acceso generado con una duración de 15 MINUTOS.
+
+## ERRORES
+```
+  Error: 400
+  Message: Correo no válido
+
+  Error: 400
+  Message: No se proporcionó el correo electrónico.
+
+  Error: 400
+  Message: El correo no está registrado.
+
+  Error: 500
+  Message: Internal Server Error
+```
+
 
 
