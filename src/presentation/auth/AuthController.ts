@@ -5,6 +5,7 @@ import { AccountLoginDto } from '../../domain/dtos/auth';
 import { ForgotPasswordDto } from '../../domain/dtos/auth';
 import { ResetPasswordDto } from '../../domain/dtos/auth';
 import { AccountService } from '../services/account-service';
+import path from 'path';
 
 export class AuthController {
   constructor(public readonly accountService: AccountService) {}
@@ -58,5 +59,19 @@ export class AuthController {
     this.accountService.resetPassword(token, resetPasswordDto!)
       .then((message) => res.json(message))
       .catch( error => this.handleError(error, res));
+  }
+
+  public serveResetPasswordPage = (req: Request, res: Response) => {
+    const { token } = req.params;
+    if(!token) {
+      return res.status(400).send('Token is required to reset password');
+    }
+
+    const filePath = path.join(
+      __dirname,
+      '../../../public/reset-password.html'
+    );
+
+    res.sendFile(filePath);  
   }
 }

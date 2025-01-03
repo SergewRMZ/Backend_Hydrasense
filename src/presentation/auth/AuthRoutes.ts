@@ -24,6 +24,7 @@ export class AuthRoutes {
     router.post('/validate-email/:token', authController.validateEmail);
     router.post('/forgot-password', authController.forgotPassword);
     router.post('/reset-password/:token', authController.resetPassword);
+    router.get('/page-reset/:token', authController.serveResetPasswordPage);
     return router;
   }
 }

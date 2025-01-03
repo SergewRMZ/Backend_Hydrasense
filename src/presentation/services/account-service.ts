@@ -85,7 +85,7 @@ export class AccountService {
     const { email } = forgotPasswordDto;
     const token = await JwtAdapter.generateToken({ email }, '15m');
     if(!token) throw CustomError.internalServer('Error getting token');
-    const link = `${envs.WERSERVICE_URL}/auth/reset-password/${token}`;
+    const link = `${envs.WERSERVICE_URL}/auth/page-reset/${token}`;
 
     const html = `
       <h1>Solicitud de Reestablecimiento de Contraseña</h1>
@@ -118,7 +118,6 @@ export class AccountService {
     
     const { email } = payload as { email: string };
     if(!email) throw CustomError.internalServer('Email not in token');
-
     const user = await this.prismaAccountRepository.findByEmail(email);
     if(!user) throw CustomError.notFound('El usuario no existe en la base de datos');
     
