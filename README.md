@@ -110,7 +110,7 @@ Si todo sale bien, el servidor responderá con el siguiente mensaje:
 
 Se enviará un correo electrónico al usuario donde se le proporcionará el link para reeestablecer la contraseña,
 donde en la misma se proporciona un token de acceso generado con una duración de 15 MINUTOS.
-
+La ruta enviada por correo dirigirá al usuario a una vista web para reestablecer la contraseña.
 ## ERRORES
 ```
   Error: 400
@@ -125,6 +125,102 @@ donde en la misma se proporciona un token de acceso generado con una duración d
   Error: 500
   Message: Internal Server Error
 ```
+
+# PERFIL
+
+## CREAR PERFIL
+En perfil se recabaran los datos de cada una de las personas. Si la cuenta se creó con un rol USER_ROLE
+entonces podrá asociar diferentes perfiles a la misma cuenta, si la cuenta se creó con un rol ENTERPRISE_ROLE
+entonces solo podrá asociarse con un solo perfil.
+
+```
+  TIPO: POST
+  AUTHORIZATION: Bearer-Token: Token
+  ENDPOINT: http://localhost:5000/api/profile/create
+```
+
+Para crear un perfil, deberán enviar el token que se retornó al crear una cuenta o al iniciar sesión. El token
+lo enviarán para verificar la autenticidad del usuario en cada operación del sistema.
+
+## REQUEST
+
+Idealmente se deben enviar los siguientes datos.
+```
+  {
+    "name": "Serge Eduardo Martínez Ramírez",
+    "weight": "67",
+    "height": "182",
+    "birthdate": "2003-02-12",
+    "is_primary": true,
+    "img": "path/servidor"
+  }
+```
+
+Los datos OBLIGATORIOS que se deben enviar a este endpoint son: NAME, BIRTHDATE, IS_PRIMARY.
+
+is_primary: True si el perfil será el perfil principal de la cuenta, de lo contario enviar false.
+img: Enviarán la ruta de la imagén de perfil. Las imágenes de perfil de los usuarios 
+se almacenarán en el servidor.
+
+Esto es para las cuentas de tipo USER_ROLE.
+
+Podrían crear un perfil con la siguiente información sin problema.
+
+```
+  {
+    "name": "Serge Eduardo Martínez Ramírez",
+    "birthdate": "2003-02-12",
+    "is_primary": true
+  }
+```
+## RESPONSE
+
+### ERROR: CUENTA EMPRESARIAL
+Cuando la cuenta es de tipo empresarial solo se podrá tener vinculada un perfil. Si se intenta crear otro perfil
+se enviará el siguiente error.
+
+```
+  {
+    "error": "No puedes tener más de un perfil asociado a tu cuenta empresarial"
+  }
+```
+
+### ERROR: TOKEN NO PROPORCIONADO
+
+Al crear un perfil se debe de enviar el token generado al iniciar sesión en los headers de la petición.
+Debe de ir como un BEARER TOKEN. Si el token no va en la solicitud, el servidor responderá con el siguiente error:
+
+```
+  {
+    "error": "No token provided"
+  }
+```
+### ERROR: TOKEN INVALIDO
+
+Si el token es proporcionado pero no es un token valido, responderá con el siguiente error:
+
+```
+  {
+    "error": "Token Invalid"
+  }
+```
+
+### SUCCESS: PERFIL CREADO CORRECTAMENTE
+Si el perfil se crea correctamente entonces el servidor responderá con la siguiente información:
+```
+  {
+    "profile_id": "3443cd57-27a3-4788-9ee6-44a98f5b468d",
+    "name": "Aaron Olvera Martínez",
+    "weight": 67,
+    "height": 162,
+    "img": "path/servidor",
+    "birthdate": "2003-03-12T00:00:00.000Z",
+    "is_primary": true,
+    "created_at": "2025-01-05T01:59:46.907Z",
+    "account_id": 2
+  }
+```
+
 
 
 

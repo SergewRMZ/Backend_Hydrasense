@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Profile" ALTER COLUMN "weight" DROP NOT NULL,
+ALTER COLUMN "height" DROP NOT NULL;

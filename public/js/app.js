@@ -27,13 +27,18 @@ const submitResetPassword = async (e) => {
 
       body: JSON.stringify(data)
     });
-
+  
     if (response.ok) {
       showSuccess('Contraseña reestablecida con éxito');
       formContainer.innerHTML = `
         <h1 class="text-center" style="color: #116688">Contraseña reestablecida correctamente</h1>
         <p class="text-muted text-center mt-3">Ahora puedes iniciar sesión en Hydrasense y seguir monitoreando tu salud!</p>
         `
+    }
+
+    else {
+      const data = await response.json();
+      showError(data.error);
     }
   } catch (error) {
     console.error('Error:', error);

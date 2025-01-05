@@ -17,4 +17,33 @@ model Account {
   role       String   @default("USER_ROLE") 
   email_validated Boolean @default(false)     
   created_at DateTime @default(now())            
+
+  profiles  Profile[]
+}
+
+model Profile {
+  profile_id String @id @default(uuid()) @db.Uuid
+  name  String
+  
+  weight Float?
+  height Float?
+  img String?
+
+  birthdate DateTime @default(now())
+  is_primary Boolean @default(false)
+  created_at DateTime @default(now())
+
+  account Account @relation(fields: [account_id], references: [account_id]) 
+  account_id Int @unique
+
+  device Device?
+}
+
+model Device {
+  device_id String @id @db.Uuid
+  device_name String 
+  connected_at DateTime @default(now())
+
+  profile Profile? @relation(fields: [profile_id], references: [profile_id])
+  profile_id String? @unique @db.Uuid
 }
