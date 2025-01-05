@@ -34,7 +34,7 @@ model Profile {
   created_at DateTime @default(now())
 
   account Account @relation(fields: [account_id], references: [account_id]) 
-  account_id Int @unique
+  account_id Int
 
   device Device?
 }

@@ -13,6 +13,7 @@ export class ProfileRoutes {
     const profileController = new ProfileController(profileService);
     
     router.post('/create', [AuthMiddleware.validateJWT], profileController.createProfile);
+    router.post('/update', [AuthMiddleware.validateJWT], profileController.updateProfile);
     return router;
   }
 }

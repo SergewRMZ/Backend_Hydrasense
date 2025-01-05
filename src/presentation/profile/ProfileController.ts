@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CustomError } from "../../domain";
 import { ProfileCreateDto } from "../../domain/dtos/profile/ProfileCreateDto";
 import { ProfileService } from "../services/profile-service";
+import { ProfileUpdateDto } from "../../domain/dtos/profile/ProfileUpdateDto";
 
 
 export class ProfileController {
@@ -20,6 +21,15 @@ export class ProfileController {
     if(error) return res.status(400).json({ error });
     
     this.profileService.createProfile(profileCreateDto!, role)
+      .then((profile) => res.json(profile))
+      .catch(error => this.handleError(error, res));
+  }
+
+  public updateProfile = (req:Request, res:Response) => {
+    const [error, profileUpdateDto] = ProfileUpdateDto.create({...req.body, user: req.body.user.id});
+    if(error) return res.status(400).json({ error });
+    
+    this.profileService.updateProfile(profileUpdateDto!)
       .then((profile) => res.json(profile))
       .catch(error => this.handleError(error, res));
   }

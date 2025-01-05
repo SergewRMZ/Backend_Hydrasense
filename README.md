@@ -221,6 +221,53 @@ Si el perfil se crea correctamente entonces el servidor responderá con la sigui
   }
 ```
 
+## Actualizar Perfil
 
+Endpoint para actualizar los datos del usuario.
+
+```
+  TIPO: POST
+  AUTHORIZATION: Bearer-Token: Token de Cuenta
+  ENDPOINT: http://localhost:5000/api/profile/update
+```
+### REQUEST
+Para solicitar una actualización de los datos es necesario que se envié el token de autenticación de la cuenta
+y el ID del perfil que se va a actualizar.
+
+```
+  {
+    "profile_id": "032127ab-2f82-49c1-8cb0-9da3c28e6892",
+    "name": "Serge Eduardo Martínez Ramírez",
+    "weight": 70,
+    "height": 182,
+    "birthdate": "2003-02-12",
+    "is_primary": true,
+    "img": "path/server"
+  }
+```
+
+### RESPONSE
+
+Si todo sale bien, el servidor responde con la data del perfil actualizado.
+
+```
+  {
+    "profile_id": "032127ab-2f82-49c1-8cb0-9da3c28e6892",
+    "name": "Serge Eduardo Martínez Ramírez",
+    "weight": 70,
+    "height": 182,
+    "img": "path/server",
+    "birthdate": "2003-02-12T00:00:00.000Z",
+    "is_primary": true,
+    "created_at": "2025-01-05T05:04:07.415Z",
+    "account_id": 1
+  }
+```
+
+### ERRORES
+* Retorna error si un perfil secundario intenta volverse un perfil principal. Al modificar los datos
+eviten que se pueda modificar si el perfil es el principal o no.
+* Retorna un error si un perfil no está asociado a la cuenta.
+* Si otro perfil intenta modificar los datos y existe otro perfil con los mismos datos en la cuenta
 
 
