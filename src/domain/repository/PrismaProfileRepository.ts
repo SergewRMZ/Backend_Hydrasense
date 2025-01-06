@@ -36,6 +36,14 @@ export class PrismaProfileRepository implements ProfileRepository {
     return profile ? true : false;
   }
 
+  /**
+   * Obtener un perfil existente con los datos dados en los parametros.
+   * @param account_id 
+   * @param profile_id 
+   * @param name 
+   * @param birthdate 
+   * @returns 
+   */
   async getProfileExists(account_id: number, profile_id: string, name: string, birthdate: string): Promise<Profile | null> {
     const profile = await this.prisma.profile.findFirst({
       where: {
@@ -51,6 +59,11 @@ export class PrismaProfileRepository implements ProfileRepository {
     return profile;
   }
 
+  /**
+   * Función para verificar que un perfil ya existe con los datos dados.
+   * @param profileCreateDto 
+   * @returns 
+   */
   async profileExists(profileCreateDto: ProfileCreateDto): Promise<boolean> {
     const profile = await this.prisma.profile.findFirst({
       where: {
@@ -63,6 +76,11 @@ export class PrismaProfileRepository implements ProfileRepository {
     return profile ? true : false;
   }
 
+  /**
+   * Función para verificar que un perfil exista dado su profile_id.
+   * @param profile_id 
+   * @returns 
+   */
   async profileExistsById(profile_id: string): Promise<boolean> {
     const profile = await this.prisma.profile.findFirst({
       where: {
