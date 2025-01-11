@@ -14,7 +14,6 @@ export class ProfileService {
     else if(role === 'USER_ROLE') {
       const existProfile = await this.prismaProfileRepository.profileExists(profileCreateDto);
       if(existProfile) throw CustomError.badRequest('Ya existe un perfil con estos datos');
-
       const existsPrimaryProfile = await this.prismaProfileRepository.existsPrimaryProfile(profileCreateDto.id_user);
       if(existsPrimaryProfile && profileCreateDto.is_primary) throw CustomError.badRequest('Ya tienes un perfil principal');
     }
@@ -28,7 +27,6 @@ export class ProfileService {
     const existsProfile = await this.prismaProfileRepository.profileExistsById(profileUpdateDto.profile_id);
     if(!existsProfile) throw CustomError.notFound('Perfil no encontrado');
     const existMainProfileId = await this.prismaProfileRepository.getProfilePrimary(profileUpdateDto.id_user);
-    //console.log('Perfil principal: ', existMainProfileId);
 
     // Evitar que un perfil secundario se convierta en principal
     if(existMainProfileId !== null && existMainProfileId !== profileUpdateDto.profile_id) {
@@ -43,7 +41,7 @@ export class ProfileService {
     const existsProfileData = await this.prismaProfileRepository.getProfileExists(profileUpdateDto.id_user, profileUpdateDto.profile_id, profileUpdateDto.name, profileUpdateDto.birthdate);
     if(existsProfileData) throw CustomError.badRequest('Ya existe un perfil con estos datos');
 
-    const updateProfile = this.prismaProfileRepository.update(profileUpdateDto);
+    const updateProfile = await this.prismaProfileRepository.update(profileUpdateDto);
     return updateProfile
   } 
 }

@@ -83,6 +83,10 @@ export class AccountService {
 
   public sendEmailResetPassword = async(forgotPasswordDto: ForgotPasswordDto) => {
     const { email } = forgotPasswordDto;
+
+    const existAccount = await this.prismaAccountRepository.findByEmail(email);
+    if(!existAccount) throw CustomError.badRequest('El correo no está en la base de datos');
+
     const token = await JwtAdapter.generateToken({ email }, '15m');
     if(!token) throw CustomError.internalServer('Error getting token');
     const link = `${envs.WERSERVICE_URL}/auth/page-reset/${token}`;
