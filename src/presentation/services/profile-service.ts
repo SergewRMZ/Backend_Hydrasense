@@ -7,14 +7,14 @@ export class ProfileService {
 
   public async createProfile(profileCreateDto: ProfileCreateDto, role: string) {
     if(role === 'ENTERPRISE_ROLE') {
-      const profiles = await this.prismaProfileRepository.countProfilesByAccountId(profileCreateDto.id_user);
+      const profiles = await this.prismaProfileRepository.countProfilesByAccountId(profileCreateDto.account_id);
       if(profiles >= 1) throw CustomError.badRequest('No puedes tener más de un perfil asociado a tu cuenta empresarial');
     }
 
     else if(role === 'USER_ROLE') {
       const existProfile = await this.prismaProfileRepository.profileExists(profileCreateDto);
       if(existProfile) throw CustomError.badRequest('Ya existe un perfil con estos datos');
-      const existsPrimaryProfile = await this.prismaProfileRepository.existsPrimaryProfile(profileCreateDto.id_user);
+      const existsPrimaryProfile = await this.prismaProfileRepository.existsPrimaryProfile(profileCreateDto.account_id);
       if(existsPrimaryProfile && profileCreateDto.is_primary) throw CustomError.badRequest('Ya tienes un perfil principal');
     }
 

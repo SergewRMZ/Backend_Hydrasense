@@ -8,26 +8,31 @@ datasource db {
 }
   
 // =======================
-// Modelo Account
+// ACCOUNT MODEL
 // =======================
 model Account {
   account_id Int      @id @default(autoincrement())
   email      String   @unique                     
   password   String                               
-  role       String   @default("USER_ROLE") 
+  role       AccountRole   @default(USER_ROLE) 
   email_validated Boolean @default(false)     
   created_at DateTime @default(now())            
-
   profiles  Profile[]
 }
 
+// =======================
+// PROFILE MODEL
+// =================== ====
 model Profile {
   profile_id String @id @default(uuid()) @db.Uuid
   name  String
-  
-  weight Float?
-  height Float?
+  lastname String
+  gender String
+  activity ActivityLevel
   img String?
+  occupation String?
+  weight  Float?
+  height Float?
 
   birthdate DateTime @default(now())
   is_primary Boolean @default(false)
@@ -39,6 +44,9 @@ model Profile {
   device Device?
 }
 
+// =======================
+// DEVICE MODEL
+// =======================
 model Device {
   device_id String @id @default(uuid()) @db.Uuid
   device_name String 
@@ -46,4 +54,30 @@ model Device {
 
   profile Profile? @relation(fields: [profile_id], references: [profile_id])
   profile_id String? @unique @db.Uuid
+
+  product Product? @relation(fields: [product_id], references: [product_id])
+  product_id String? @unique @db.Uuid
+}
+
+model Product {
+  product_id String @id @default(uuid()) @db.Uuid
+  device_code String @unique
+  created_at DateTime @default(now())
+  device Device?
+}
+
+// =======================
+// ENUM PARA ACTIVITY LEVEL
+// =======================
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+  SUPER_ACTIVE
+}
+
+enum AccountRole {
+  USER_ROLE
+  ENTERPRISE_ROLE
 }

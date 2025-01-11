@@ -67,7 +67,7 @@ export class PrismaProfileRepository implements ProfileRepository {
   async profileExists(profileCreateDto: ProfileCreateDto): Promise<boolean> {
     const profile = await this.prisma.profile.findFirst({
       where: {
-        account_id: profileCreateDto.id_user,
+        account_id: profileCreateDto.account_id,
         name: profileCreateDto.name,
         birthdate: new Date(profileCreateDto.birthdate),
         img: profileCreateDto.img,
@@ -103,16 +103,20 @@ export class PrismaProfileRepository implements ProfileRepository {
     const createProfile = await this.prisma.profile.create({
       data: {
         name: profileCreateDto.name,
+        lastname: profileCreateDto.lastname,
+        gender: profileCreateDto.gender,
+        img: profileCreateDto.img,
+        occupation: profileCreateDto.occupation,
         weight: profileCreateDto.weight,
         height: profileCreateDto.height,
+        activity: profileCreateDto.activity,
         birthdate: new Date(profileCreateDto.birthdate),
         is_primary: profileCreateDto.is_primary,
         created_at: new Date(profileCreateDto.created_at),
-        img: profileCreateDto.img,
         
         account: {
           connect: {
-            account_id: profileCreateDto.id_user
+            account_id: profileCreateDto.account_id
           }
         }
       }
@@ -127,9 +131,13 @@ export class PrismaProfileRepository implements ProfileRepository {
       },
       data: {
         name: profileUpdateDto.name,
+        lastname: profileUpdateDto.lastname,
+        gender: profileUpdateDto.gender,
+        activity: profileUpdateDto.activity,
+        occupation: profileUpdateDto.occupation,
+        birthdate: new Date(profileUpdateDto.birthdate),
         weight: profileUpdateDto.weight,
         height: profileUpdateDto.height,
-        birthdate: new Date(profileUpdateDto.birthdate),
         is_primary: profileUpdateDto.is_primary,
         img: profileUpdateDto.img
       }
