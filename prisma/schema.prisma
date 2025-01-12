@@ -53,10 +53,10 @@ model Device {
   connected_at DateTime @default(now())
 
   profile Profile? @relation(fields: [profile_id], references: [profile_id])
-  profile_id String? @unique @db.Uuid
+  profile_id String @unique @db.Uuid
 
   product Product? @relation(fields: [product_id], references: [product_id])
-  product_id String? @unique @db.Uuid
+  product_id String @unique @db.Uuid
 }
 
 model Product {

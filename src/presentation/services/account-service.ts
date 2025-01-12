@@ -6,7 +6,7 @@ import { AccountRegisterDto } from '../../domain/dtos/auth/AccountRegisterDto';
 import { ForgotPasswordDto } from '../../domain/dtos/auth/ForgotPasswordDto';
 import { AccountEntity } from '../../domain/entities/AccountEntity';
 import { PrismaAccountRepository } from '../../domain/repository/PrismaAccountRepository';
-import { EmailService } from './email-service';
+import { EmailService } from './email.service';
 
 export class AccountService {
   constructor(
