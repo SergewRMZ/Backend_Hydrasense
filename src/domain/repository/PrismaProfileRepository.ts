@@ -144,4 +144,13 @@ export class PrismaProfileRepository implements ProfileRepository {
     });
     return updateProfile;
   }
+
+  async getProfile(profileId: string): Promise<Profile | null> {
+    const profile = await this.prisma.profile.findFirst({
+      where: {
+        profile_id: profileId
+      }
+    });
+    return profile;
+  }
 }

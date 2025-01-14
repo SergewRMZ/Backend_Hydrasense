@@ -36,7 +36,7 @@ export class ProfileCreateDto {
     if (!name) return ['El nombre es obligatorio', undefined];
     if (!lastname) return ['El apellido es obligatorio', undefined];
     if (!gender) return ['El género es obligatorio', undefined];
-    if(gender != 'Masculino' && gender != 'Femenino') return ['El género no es válido', undefined];
+    if(gender != 'Masculino' && gender != 'Femenino' && gender != 'Otro') return ['El género no es válido', undefined];
     if (!birthdate) return ['La fecha de nacimiento es necesaria para crear tu perfil', undefined];
     if(!activity) return ['El nivel de actividad es obligatorio', undefined];
 
