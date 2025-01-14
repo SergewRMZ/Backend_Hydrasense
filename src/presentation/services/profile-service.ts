@@ -45,12 +45,16 @@ export class ProfileService {
     return updateProfile
   } 
 
-  public async getProfile(profileId: string) {
+  public async getProfile(accountId: number) {
+    // Buscar el perfil principal con is_primary = true
+    const profilePrimary = await this.prismaProfileRepository.getProfilePrimary(accountId) || '';
+    if(!profilePrimary) throw CustomError.notFound('Perfil no encontrado');
+
     // Verificar que el perfil exista
-    const existsProfile = await this.prismaProfileRepository.profileExistsById(profileId);
+    const existsProfile = await this.prismaProfileRepository.profileExistsById(profilePrimary);
     if(!existsProfile) throw CustomError.notFound('Perfil no encontrado');
 
-    const profile = await this.prismaProfileRepository.getProfile(profileId);
+    const profile = await this.prismaProfileRepository.getProfile(profilePrimary);
     return profile;
   }
 }

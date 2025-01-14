@@ -6,69 +6,52 @@ datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_URL")
 }
-  
-// =======================
-// ACCOUNT MODEL
-// =======================
+
 model Account {
-  account_id Int      @id @default(autoincrement())
-  email      String   @unique                     
-  password   String                               
-  role       AccountRole   @default(USER_ROLE) 
-  email_validated Boolean @default(false)     
-  created_at DateTime @default(now())            
-  profiles  Profile[]
+  account_id      Int         @id @default(autoincrement())
+  email           String      @unique
+  password        String
+  email_validated Boolean     @default(false)
+  created_at      DateTime    @default(now())
+  role            AccountRole @default(USER_ROLE)
+  profiles        Profile[]
 }
 
-// =======================
-// PROFILE MODEL
-// =================== ====
 model Profile {
-  profile_id String @id @default(uuid()) @db.Uuid
-  name  String
-  lastname String
-  gender String
-  activity ActivityLevel
-  img String?
-  occupation String?
-  weight  Float?
-  height Float?
-
-  birthdate DateTime @default(now())
-  is_primary Boolean @default(false)
-  created_at DateTime @default(now())
-
-  account Account @relation(fields: [account_id], references: [account_id]) 
+  profile_id String        @id @default(uuid()) @db.Uuid
+  name       String
+  birthdate  DateTime      @default(now())
+  is_primary Boolean       @default(false)
+  created_at DateTime      @default(now())
   account_id Int
-
-  device Device?
+  img        String?
+  weight     Float?
+  height     Float?
+  activity   ActivityLevel
+  gender     String
+  lastname   String
+  occupation String?
+  device     Device?
+  account    Account       @relation(fields: [account_id], references: [account_id])
 }
 
-// =======================
-// DEVICE MODEL
-// =======================
 model Device {
-  device_id String @id @default(uuid()) @db.Uuid
-  device_name String 
+  device_id    String   @id @default(uuid()) @db.Uuid
+  device_name  String
   connected_at DateTime @default(now())
-
-  profile Profile? @relation(fields: [profile_id], references: [profile_id])
-  profile_id String @unique @db.Uuid
-
-  product Product? @relation(fields: [product_id], references: [product_id])
-  product_id String @unique @db.Uuid
+  profile_id   String   @unique @db.Uuid
+  product_id   String   @unique @db.Uuid
+  product      Product  @relation(fields: [product_id], references: [product_id])
+  profile      Profile  @relation(fields: [profile_id], references: [profile_id])
 }
 
 model Product {
-  product_id String @id @default(uuid()) @db.Uuid
-  device_code String @unique
-  created_at DateTime @default(now())
-  device Device?
+  product_id  String   @id @default(uuid()) @db.Uuid
+  device_code String   @unique
+  created_at  DateTime @default(now())
+  device      Device?
 }
 
-// =======================
-// ENUM PARA ACTIVITY LEVEL
-// =======================
 enum ActivityLevel {
   SEDENTARY
   LIGHTLY_ACTIVE
