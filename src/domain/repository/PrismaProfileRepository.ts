@@ -153,4 +153,13 @@ export class PrismaProfileRepository implements ProfileRepository {
     });
     return profile;
   }
+
+  async getAllProfiles(accountId: number): Promise<Profile[]> {
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        account_id: accountId
+      }
+    });
+    return profiles;
+  }
 }

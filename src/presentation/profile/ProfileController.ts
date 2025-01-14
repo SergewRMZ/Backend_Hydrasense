@@ -40,4 +40,18 @@ export class ProfileController {
       .then((profile) => res.json(profile))
       .catch(error => this.handleError(error, res));
   }
+
+  public getProfileById = (req:Request, res:Response) => {
+    const profileId = req.body.profile_id;
+    this.profileService.getProfileById(profileId)
+      .then((profile) => res.json(profile))
+      .catch(error => this.handleError(error, res));
+  }
+
+  public getAllProfiles = (req:Request, res:Response) => {
+    const accountId = req.body.account_id;
+    this.profileService.getAllProfiles(accountId)
+      .then((profiles) => res.json(profiles))
+      .catch(error => this.handleError(error, res));
+  }
 }

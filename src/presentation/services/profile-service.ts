@@ -57,4 +57,18 @@ export class ProfileService {
     const profile = await this.prismaProfileRepository.getProfile(profilePrimary);
     return profile;
   }
+
+  public async getProfileById(profileId: string) {
+    // Verificar que el perfil exista
+    const existsProfile = await this.prismaProfileRepository.profileExistsById(profileId);
+    if(!existsProfile) throw CustomError.notFound('Perfil no encontrado');
+    
+    const profile = await this.prismaProfileRepository.getProfile(profileId);
+    return profile;
+  }
+
+  public async getAllProfiles(accountId: number) {
+    const profiles = await this.prismaProfileRepository.getAllProfiles(accountId);
+    return profiles;
+  }
 }
