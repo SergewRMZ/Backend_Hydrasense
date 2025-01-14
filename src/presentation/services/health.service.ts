@@ -8,8 +8,8 @@ export class HealthService {
   ) {}
 
   public async createMeasurement(healthCreateDto: HealthCreateDto) {
-    const existProfile = await this.prismaDeviceRepository.existsDeviceById(healthCreateDto.device_id);
-    if(!existProfile) throw CustomError.badRequest('Dispositivo no encontrado en la base de datos');
+    const existDevice = await this.prismaDeviceRepository.existsDeviceById(healthCreateDto.device_id);
+    if(!existDevice) throw CustomError.badRequest('Dispositivo no encontrado en la base de datos');
     const newMeasurement = await this.prismaHealthRepository.createMeasurement(healthCreateDto);
     return newMeasurement;
   }
