@@ -29,4 +29,13 @@ export class HealthController {
       .then(measurements => res.status(200).json(measurements))
       .catch(error => this.handleError(error, res));
   }
+
+  public generateReport = (req:Request, res:Response) => {
+    const [error, healthGetDto] = HealthGetDto.create(req.body);
+    if (error) return res.status(400).json({ error });
+
+    this.healthService.generateReport(healthGetDto!)
+      .then(report => res.status(200).json(report))
+      .catch(error => this.handleError(error, res));
+  }
 }
