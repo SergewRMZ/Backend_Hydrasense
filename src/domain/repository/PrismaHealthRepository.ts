@@ -20,4 +20,17 @@ export class PrismaHealthRepository implements HealthRepository {
     return measurement;
   }
 
+  async getMeasurementsByDevice(device_id: string): Promise<HealthRecord[]> {
+    const measurements = await this.prisma.healthRecord.findMany({
+      where: {
+        device_id: device_id,
+      },
+
+      orderBy: {
+        timestamp: 'asc'
+      }
+    });
+
+    return measurements;
+  }
 }

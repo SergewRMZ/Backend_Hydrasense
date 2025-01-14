@@ -14,6 +14,7 @@ export class HealthRoutes {
     const healthService = new HealthService(prismaHealthRepository, prismaDeviceRepository);
     const healthController = new HealthController(healthService);
     router.post('/create', [AuthMiddleware.validateJWT], healthController.createMeasurement);
+    router.get('/', [AuthMiddleware.validateJWT], healthController.getMeasurements);
     return router;
   }
 }

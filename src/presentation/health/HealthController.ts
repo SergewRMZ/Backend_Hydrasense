@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CustomError } from "../../domain";
 import { HealthCreateDto } from "../../domain";
 import { HealthService } from "../services/health.service";
+import { HealthGetDto } from "../../domain/dtos/health/HealthGetDto";
 export class HealthController {
   constructor(public readonly healthService: HealthService) {}
 
@@ -18,5 +19,14 @@ export class HealthController {
     this.healthService.createMeasurement(healthCreateDto!)
       .then(measurement => res.status(201).json(measurement))
       .catch(error => this.handleError(error, res)); 
+  }
+
+  public getMeasurements = (req:Request, res:Response) => {
+    const [error, healthGetDto] = HealthGetDto.create(req.body);
+    if(error) return res.status(400).json({ error });
+
+    this.healthService.getMeasurements(healthGetDto!)
+      .then(measurements => res.status(200).json(measurements))
+      .catch(error => this.handleError(error, res));
   }
 }
