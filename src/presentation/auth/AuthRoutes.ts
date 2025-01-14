@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AuthController } from './AuthController';
-import { AccountService } from '../services/account-service';
+import { AccountService } from '../services/account.service';
 import { PrismaAccountRepository } from '../../domain/repository/PrismaAccountRepository';
 import { EmailService } from '../services/email.service';
 import { envs } from '../../config';

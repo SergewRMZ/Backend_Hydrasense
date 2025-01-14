@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Account } from '@prisma/client';
-import { AccountRepository } from './AccountRepository';
+import { AccountRepository } from './interfaces/AccountRepository';
 import { AccountRegisterDto } from '../dtos/auth/AccountRegisterDto';
 
 export class PrismaAccountRepository implements AccountRepository {

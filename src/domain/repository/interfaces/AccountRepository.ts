@@ -1,6 +1,6 @@
 import { Account } from '@prisma/client';
-import { AccountRegisterDto } from '../dtos/auth/AccountRegisterDto';
-import { AccountEntity } from '../entities/AccountEntity';
+import { AccountRegisterDto } from '../../dtos/auth/AccountRegisterDto';
+import { AccountEntity } from '../../entities/AccountEntity';
 
 export abstract class AccountRepository {
   abstract findByEmail(email: string): Promise<Account | null>;

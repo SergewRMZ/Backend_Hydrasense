@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CustomError } from "../../domain";
 import { ProfileCreateDto } from "../../domain/dtos/profile/ProfileCreateDto";
-import { ProfileService } from "../services/profile-service";
+import { ProfileService } from "../services/profile.service";
 import { ProfileUpdateDto } from "../../domain/dtos/profile/ProfileUpdateDto";
 
 

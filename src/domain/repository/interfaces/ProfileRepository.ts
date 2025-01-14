@@ -1,6 +1,6 @@
 import { Profile } from "@prisma/client";
-import { ProfileCreateDto } from "../dtos/profile/ProfileCreateDto";
-import { ProfileUpdateDto } from "../dtos/profile/ProfileUpdateDto";
+import { ProfileCreateDto } from "../../dtos/profile/ProfileCreateDto";
+import { ProfileUpdateDto } from "../../dtos/profile/ProfileUpdateDto";
 
 export abstract class ProfileRepository {
   abstract getProfilePrimary(account_id: number): Promise<string | null>;

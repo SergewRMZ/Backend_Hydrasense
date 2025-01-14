@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CustomError } from "../../domain";
 import { DeviceCreateDto } from "../../domain/dtos/device";
-import { DeviceService } from "../services/device-service";
+import { DeviceService } from "../services/device.service";
 import { Code } from "../../config";
 
 export class DeviceController {

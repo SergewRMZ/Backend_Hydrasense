@@ -57,6 +57,18 @@ model Device {
 
   product Product? @relation(fields: [product_id], references: [product_id])
   product_id String @unique @db.Uuid
+
+  healthRecors HealthRecord[]
+}
+
+model HealthRecord {
+  record_id String @id @default(uuid()) @db.Uuid
+  temperature Float
+  hydration Float
+  timestamp DateTime @default(now())
+
+  device Device @relation(fields: [device_id], references: [device_id])
+  device_id String @db.Uuid
 }
 
 model Product {

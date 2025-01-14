@@ -4,7 +4,7 @@ import { AccountRegisterDto } from '../../domain/dtos/auth';
 import { AccountLoginDto } from '../../domain/dtos/auth';
 import { ForgotPasswordDto } from '../../domain/dtos/auth';
 import { ResetPasswordDto } from '../../domain/dtos/auth';
-import { AccountService } from '../services/account-service';
+import { AccountService } from '../services/account.service';
 import path from 'path';
 
 export class AuthController {

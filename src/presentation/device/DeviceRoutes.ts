@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { DeviceController } from "./DeviceController";
 import { AuthMiddleware } from "../middleware/auth.middleware";
-import { DeviceService } from "../services/device-service";
+import { DeviceService } from "../services/device.service";
 import { PrismaProductRepository, PrismaProfileRepository } from "../../domain";
 import { PrismaDeviceRepository } from "../../domain/repository/PrismaDeviceRepository";
 import { ProductService } from "../services/product.service";

@@ -1,5 +1,5 @@
 import { PrismaClient, Profile } from "@prisma/client";
-import { ProfileRepository } from "./ProfileRepository";
+import { ProfileRepository } from "./interfaces/ProfileRepository";
 import { ProfileCreateDto } from "../dtos/profile/ProfileCreateDto";
 import { ProfileUpdateDto } from "../dtos/profile/ProfileUpdateDto";
 
