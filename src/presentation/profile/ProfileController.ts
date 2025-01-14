@@ -35,8 +35,8 @@ export class ProfileController {
   }
 
   public getProfile = (req:Request, res:Response) => {
-    const profileId = req.body.profileId;
-    this.profileService.getProfile(profileId)
+    const accountId = req.body.account_id;
+    this.profileService.getProfile(accountId)
       .then((profile) => res.json(profile))
       .catch(error => this.handleError(error, res));
   }
