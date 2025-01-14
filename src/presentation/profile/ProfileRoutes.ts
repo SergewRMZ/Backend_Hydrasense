@@ -15,6 +15,8 @@ export class ProfileRoutes {
     router.post('/create', [AuthMiddleware.validateJWT], profileController.createProfile);
     router.post('/update', [AuthMiddleware.validateJWT], profileController.updateProfile);
     router.post('/get', [AuthMiddleware.validateJWT], profileController.getProfile);
+    router.post('/getById', [AuthMiddleware.validateJWT], profileController.getProfileById);
+    router.post('/getAll', [AuthMiddleware.validateJWT], profileController.getAllProfiles);
     return router;
   }
 }
