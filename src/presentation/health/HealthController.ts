@@ -29,4 +29,21 @@ export class HealthController {
       .then(measurements => res.status(200).json(measurements))
       .catch(error => this.handleError(error, res));
   }
+
+  public createMeasurementWithTimestamp = (req:Request, res:Response) => {
+    const [error, healthCreateDto] = HealthCreateDto.create(req.body);
+    if(error) return res.status(400).json({ error });
+    console.log(healthCreateDto);
+    this.healthService.createMeasurement(healthCreateDto!)
+      .then(measurement => res.status(201).json(measurement))
+      .catch(error => this.handleError(error, res)); 
+  }
+
+  public getDeviceId = (req:Request, res:Response) => {
+    const profile_id = req.body.profile_id;
+    this.healthService.getDeviceId(profile_id)
+      .then(device_id => res.status(200).json(device_id))
+      .catch(error => this.handleError(error, res));
+  }
+
 }

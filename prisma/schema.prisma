@@ -36,13 +36,23 @@ model Profile {
 }
 
 model Device {
-  device_id    String   @id @default(uuid()) @db.Uuid
+  device_id    String         @id @default(uuid()) @db.Uuid
   device_name  String
-  connected_at DateTime @default(now())
-  profile_id   String   @unique @db.Uuid
-  product_id   String   @unique @db.Uuid
-  product      Product  @relation(fields: [product_id], references: [product_id])
-  profile      Profile  @relation(fields: [profile_id], references: [profile_id])
+  connected_at DateTime       @default(now())
+  profile_id   String         @unique @db.Uuid
+  product_id   String         @unique @db.Uuid
+  product      Product        @relation(fields: [product_id], references: [product_id])
+  profile      Profile        @relation(fields: [profile_id], references: [profile_id])
+  healthRecors HealthRecord[]
+}
+
+model HealthRecord {
+  record_id   String   @id @default(uuid()) @db.Uuid
+  temperature Float
+  hydration   Float
+  timestamp   DateTime @default(now())
+  device_id   String   @db.Uuid
+  device      Device   @relation(fields: [device_id], references: [device_id])
 }
 
 model Product {
