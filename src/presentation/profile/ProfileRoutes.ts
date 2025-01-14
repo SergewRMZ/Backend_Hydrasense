@@ -14,6 +14,7 @@ export class ProfileRoutes {
     
     router.post('/create', [AuthMiddleware.validateJWT], profileController.createProfile);
     router.post('/update', [AuthMiddleware.validateJWT], profileController.updateProfile);
+    router.post('/get', [AuthMiddleware.validateJWT], profileController.getProfile);
     return router;
   }
 }

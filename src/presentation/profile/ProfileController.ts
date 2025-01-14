@@ -33,4 +33,11 @@ export class ProfileController {
       .then((profile) => res.json(profile))
       .catch(error => this.handleError(error, res));
   }
+
+  public getProfile = (req:Request, res:Response) => {
+    const profileId = req.body.profileId;
+    this.profileService.getProfile(profileId)
+      .then((profile) => res.json(profile))
+      .catch(error => this.handleError(error, res));
+  }
 }

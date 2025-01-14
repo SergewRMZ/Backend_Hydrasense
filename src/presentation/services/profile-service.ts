@@ -44,4 +44,13 @@ export class ProfileService {
     const updateProfile = await this.prismaProfileRepository.update(profileUpdateDto);
     return updateProfile
   } 
+
+  public async getProfile(profileId: string) {
+    // Verificar que el perfil exista
+    const existsProfile = await this.prismaProfileRepository.profileExistsById(profileId);
+    if(!existsProfile) throw CustomError.notFound('Perfil no encontrado');
+
+    const profile = await this.prismaProfileRepository.getProfile(profileId);
+    return profile;
+  }
 }
