@@ -1,6 +1,6 @@
 export class DeviceCreateDto {
   constructor (
-    public deviceCode: string,
+    public device_code: string,
     public device_name: string,
     public product_id: string,
     public profile_id: string,

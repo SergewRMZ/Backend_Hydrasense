@@ -3,7 +3,7 @@ import { PrismaProductRepository } from "../../domain";
 
 export class ProductService {
   constructor(private readonly productRepository: PrismaProductRepository) {
-    //this.generateDeviceCodes()
+    // this.generateDeviceCodes()
   }
   public async existProductById(product_id:string) {
     return await this.productRepository.getProductById(product_id);

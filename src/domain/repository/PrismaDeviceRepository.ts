@@ -40,4 +40,29 @@ export class PrismaDeviceRepository implements DeviceRepository {
     }
   }
   
+  // Obtiene solo el id del dispositivo, ya que es uno por perfil
+  async getDeviceIdByProfile(profile_id: string): Promise<Device[]> {
+    try {
+      const device = await this.prisma.device.findMany({
+        where: { profile_id: profile_id },
+      });
+      return device;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  async getDeviceById(device_id: string): Promise<Device | null> {
+    try {
+      const device = await this.prisma.device.findUnique({
+        where: { device_id: device_id }
+      });
+      return device;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
 }

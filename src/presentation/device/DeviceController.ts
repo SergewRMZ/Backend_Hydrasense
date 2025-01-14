@@ -15,7 +15,16 @@ export class DeviceController {
   } 
 
   public createDevice = (req:Request, res:Response) => {
-    const [error, deviceCreateDto] = DeviceCreateDto.create(req.body);
+    
+    const device_code = req.body.device_code;
+    const device_name = req.body.device_name;
+    const product_id = req.body.product_id;
+    const profile_id = req.body.profile_id;
+    const connected_at = new Date().toISOString();
+    
+    const device = new DeviceCreateDto(device_code, device_name, product_id, profile_id, connected_at);
+    
+    const [error, deviceCreateDto] = DeviceCreateDto.create(device);
     if(error) return res.status(400).json({ error });
     this.deviceService.createDevice(deviceCreateDto!)
       .then(device => res.status(201).json(device))

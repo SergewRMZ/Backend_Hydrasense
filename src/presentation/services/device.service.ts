@@ -17,9 +17,9 @@ export class DeviceService {
     if(!existProfile) throw CustomError.badRequest('Perfil no encontrado');
     const existProduct = await this.productService.existProductById(deviceCreateDto.product_id);
     if(!existProduct) throw CustomError.badRequest('Producto no encontrado');
-    
+
     // Verificar código de dispositivo
-    const isMatch = bcrypAdapter.compare(deviceCreateDto.deviceCode, existProduct.device_code);
+    const isMatch = bcrypAdapter.compare(deviceCreateDto.device_code, existProduct.device_code);
     if(!isMatch) throw CustomError.badRequest('Código de dispositivo inválido');
 
     const device = await this.prismaDeviceRepository.create(deviceCreateDto, deviceCreateDto.product_id);
