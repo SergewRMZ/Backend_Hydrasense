@@ -145,10 +145,10 @@ export class PrismaProfileRepository implements ProfileRepository {
     return updateProfile;
   }
 
-  async getProfile(profileId: string): Promise<Profile | null> {
+  async getProfile(profile_id: string): Promise<Profile | null> {
     const profile = await this.prisma.profile.findFirst({
       where: {
-        profile_id: profileId
+        profile_id: profile_id
       }
     });
     return profile;

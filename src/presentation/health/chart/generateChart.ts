@@ -4,7 +4,7 @@ import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 export async function generateChart(healthData: any[]) {
   const width = 800;
   const height = 600;
-  const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
+  const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour: 'white' });
   const labels = healthData.map((data) => new Date(data.timestamp));
   const temperatureData = healthData.map((data) => data.temperature);
   const hydrationData = healthData.map((data) => data.hydration);

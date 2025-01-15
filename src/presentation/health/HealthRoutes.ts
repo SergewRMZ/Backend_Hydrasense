@@ -5,13 +5,15 @@ import { PrismaDeviceRepository } from "../../domain/repository/PrismaDeviceRepo
 import { PrismaHealthRepository } from "../../domain/repository/PrismaHealthRepository";
 import { HealthService } from "../services/health.service";
 import { HealthController } from "./HealthController";
+import { PrismaProfileRepository } from "../../domain";
 
 export class HealthRoutes {
   static get routes():Router {
     const router = Router();
     const prismaDeviceRepository = new PrismaDeviceRepository();
     const prismaHealthRepository = new PrismaHealthRepository();
-    const healthService = new HealthService(prismaHealthRepository, prismaDeviceRepository);
+    const prismaProfileRepository = new PrismaProfileRepository();
+    const healthService = new HealthService(prismaHealthRepository, prismaDeviceRepository, prismaProfileRepository);
     const healthController = new HealthController(healthService);
     router.post('/create', [AuthMiddleware.validateJWT], healthController.createMeasurement);
     router.post('/generateReport', [AuthMiddleware.validateJWT], healthController.generateReport);

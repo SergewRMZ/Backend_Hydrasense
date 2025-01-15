@@ -1,12 +1,14 @@
 export class HealthGetDto {
   constructor(
-    public device_id: string
+    public device_id: string,
+    public date: string
   ) {}
 
   static create(object: {[key: string]: any}): [string?, HealthGetDto?] {
-    const {device_id} = object;
+    const {device_id, date} = object;
     if(!device_id) return['El código de dispositivo es necesario', undefined];
-    const dto = new HealthGetDto(device_id);
+    if(!date) return['La fecha es necesaria para generar el reporte', undefined];
+    const dto = new HealthGetDto(device_id, new Date(date).toISOString());
     return [undefined, dto];
   }
 }

@@ -40,4 +40,18 @@ export class PrismaDeviceRepository implements DeviceRepository {
     }
   }
   
+  async getDeviceById(device_id: string): Promise<Device | null> {
+    try {
+      const device = await this.prisma.device.findUnique({
+        where: {
+          device_id: device_id
+        }
+      });
+
+      return device;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
